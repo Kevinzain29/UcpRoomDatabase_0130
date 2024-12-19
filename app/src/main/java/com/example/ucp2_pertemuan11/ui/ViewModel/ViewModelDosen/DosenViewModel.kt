@@ -52,6 +52,10 @@ class DosenViewModel(private val repositoryDosen: RepositoryDosen) : ViewModel()
             )
         }
     }
+    // Reset pesan Snackbar setelah dtampilkan
+    fun resetSnackBarMessage() {
+        uiState = uiState.copy(snackBarMessage = null)
+    }
 }
 
 
