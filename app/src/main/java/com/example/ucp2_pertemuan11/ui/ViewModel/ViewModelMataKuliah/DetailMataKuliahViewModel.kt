@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ucp2_pertemuan11.data.Entity.MataKuliah
 import com.example.ucp2_pertemuan11.repository.RepositoryMataKuliah
+import com.example.ucp2_pertemuan11.ui.navigation.DestinasiDetailMataKuliah
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
