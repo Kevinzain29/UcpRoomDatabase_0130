@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ucp2_pertemuan11.data.Entity.Dosen
 import com.example.ucp2_pertemuan11.repository.RepositoryDosen
+import com.example.ucp2_pertemuan11.ui.navigation.DestinasiDetailDosen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
