@@ -4,9 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.ucp2_pertemuan11.data.Entity.MataKuliah
 import com.example.ucp2_pertemuan11.repository.RepositoryMataKuliah
-import com.example.ucp2_pertemuan11.ui.ViewModel.ViewModelDosen.FormErrorState
+import kotlinx.coroutines.launch
 
 class MataKuliahViewModel(private val repositoryMataKuliah: RepositoryMataKuliah) : ViewModel() {
 
@@ -27,10 +28,38 @@ class MataKuliahViewModel(private val repositoryMataKuliah: RepositoryMataKuliah
             SKS = if (event.SKS.isNotEmpty()) null else "SKS tidak boleh kosong",
             Semester = if (event.Semester.isNotEmpty()) null else "Semester tidak boleh kosong",
             Jenis = if (event.Jenis.isNotEmpty()) null else "Jenis tidak boleh kosong",
-            DosenPengampu = if (event.DosenPengampu.isNotEmpty()) null else "DosenPengampu tidak boleh kosong"
+            DosenPengampu = if (event.DosenPengampu.isNotEmpty()) null else "DosenPengampu tidak boleh kosong",
         )
         uiState = uiState.copy(isEntryValid = errorState)
         return errorState.isValid()
+    }
+    //menyimpan data ke repository
+    fun saveData(){
+        val currentEvent = uiState.mataKuliahEvent
+        if (validateFields()){
+            viewModelScope.launch {
+                try {
+                    repositoryMataKuliah.insertMataKuliah(currentEvent.toMataKuliahEntity())
+                    uiState = uiState.copy(
+                        snackBarMessage = "Data Mata Kuliah berhasil disimpan",
+                        mataKuliahEvent = MataKuliahEvent(), // reset inputan form
+                        isEntryValid = FormErrorState() // reset error state
+                    )
+                } catch (e: Exception) {
+                    uiState = uiState.copy(
+                        snackBarMessage = "Data Mata Kuliah gagal disimpan"
+                    )
+                }
+            }
+        } else {
+            uiState = uiState.copy(
+                snackBarMessage = "Input tidak valid, periksa kembali data anda"
+            )
+        }
+    }
+    // Reset pesan Snackbar setelah dtampilkan
+    fun resetSnackBarMessage() {
+        uiState = uiState.copy(snackBarMessage = null)
     }
 }
 
