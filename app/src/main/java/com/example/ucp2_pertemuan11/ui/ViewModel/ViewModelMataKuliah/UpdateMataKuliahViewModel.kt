@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ucp2_pertemuan11.data.Entity.MataKuliah
 import com.example.ucp2_pertemuan11.repository.RepositoryMataKuliah
+import com.example.ucp2_pertemuan11.ui.navigation.DestinasiUpdateMataKuliah
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
