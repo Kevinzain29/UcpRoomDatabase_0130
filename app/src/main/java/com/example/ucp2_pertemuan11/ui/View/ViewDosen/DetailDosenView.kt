@@ -22,8 +22,6 @@ fun DetailDosenView(
     modifier: Modifier = Modifier,
     viewModel: DetailDosenViewModel = viewModel(factory = PenyediaDosenViewModel.Factory),
     onBack: () -> Unit = {},
-    onEditClick: (String) -> Unit = {},
-    onDeleteClick: () -> Unit = {}
 ){
     Scaffold(
         topBar = {
