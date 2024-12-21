@@ -6,15 +6,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -25,9 +31,59 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ucp2_pertemuan11.data.Entity.MataKuliah
+import com.example.ucp2_pertemuan11.ui.ViewModel.ViewModelMataKuliah.DetailMataKuliahViewModel
 import com.example.ucp2_pertemuan11.ui.ViewModel.ViewModelMataKuliah.DetailUiState
+import com.example.ucp2_pertemuan11.ui.ViewModel.ViewModelMataKuliah.PenyediaMataKuliahViewModel
 import com.example.ucp2_pertemuan11.ui.ViewModel.ViewModelMataKuliah.toMataKuliahEntity
+import com.example.ucp2_pertemuan11.ui.costumwidget.TopAppBar
+
+@Composable
+fun DetailMataKuliahView(
+    modifier: Modifier = Modifier,
+    viewModel: DetailMataKuliahViewModel = viewModel(factory = PenyediaMataKuliahViewModel.Factory),
+    onBack: () -> Unit = {},
+    onEditClick: (String) -> Unit = {},
+    onDeleteClick: () -> Unit = {}
+){
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                judul = "Detail Mata Kuliah",
+                showBackButton = true,
+                onBack = onBack,
+                modifier = modifier
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    onEditClick(viewModel.detailUiState.value.detailUiEvent.Kode) },
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.padding(16.dp)
+            ){
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit Mata Kuliah",
+                )
+
+
+            }
+        }
+    ) { innerpadding ->
+        val detailUiState by viewModel.detailUiState.collectAsState()
+
+        BodyDetailMataKuliah(
+            modifier = Modifier.padding(innerpadding),
+            detailUiState = detailUiState,
+            onDeleteClick = {
+                viewModel.deleteMhs()
+                onDeleteClick()
+            }
+        )
+    }
+}
 
 @Composable
 fun BodyDetailMataKuliah(
