@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -14,20 +15,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.ucp2_pertemuan11.data.Entity.Dosen
 import com.example.ucp2_pertemuan11.ui.ViewModel.ViewModelMataKuliah.FormErrorState
 import com.example.ucp2_pertemuan11.ui.ViewModel.ViewModelMataKuliah.MataKuliahEvent
+import com.example.ucp2_pertemuan11.ui.costumwidget.DynamicSelectedField
+import com.example.ucp2_pertemuan11.ui.navigation.AlamatNavigasi
+
+object DestinasiInsertMataKuliah : AlamatNavigasi {
+    override val route: String = "insert_MataKuliah"
+}
 
 @Composable
 fun FormMataKuliah(
     mataKuliahEvent: MataKuliahEvent = MataKuliahEvent(),
     onValueChange: (MataKuliahEvent) -> Unit = {},
     errorState: FormErrorState = FormErrorState(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    listDosen: List<Dosen>
 ){
     val SKS = listOf("1", "2", "3")
     val Jenis = listOf("Wajib", "Peminatan")
+    val LISTDOSEN = listDosen.map { it.Nama }
 
     Column(
         modifier = modifier.fillMaxWidth()
@@ -117,15 +129,21 @@ fun FormMataKuliah(
                 }
             }
         }
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = mataKuliahEvent.DosenPengampu,
-            onValueChange = {
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Pilih Dosen Pengampu mata kuliah", fontWeight = FontWeight.Bold)
+        Text(
+            text = "pilih dosen pengampu",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Light
+        )
+        Spacer(modifier = Modifier.padding(8.dp))
+        DynamicSelectedField(
+            selectedValue = mataKuliahEvent.DosenPengampu,
+            options = LISTDOSEN,
+            label = "Dosen Pengampu",
+            onValueChangedEvent = {
                 onValueChange(mataKuliahEvent.copy(DosenPengampu = it))
-            },
-            label = { Text("Dosen Pengampu") },
-            isError = errorState.DosenPengampu!=null,
-            placeholder = { Text("Masukkan Dosen Pengampu ") }
+            }
         )
         Text(text = errorState.DosenPengampu ?:"",
             color = Color.Red
