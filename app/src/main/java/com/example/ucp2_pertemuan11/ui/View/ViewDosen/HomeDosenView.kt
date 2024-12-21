@@ -1,10 +1,22 @@
 package com.example.ucp2_pertemuan11.ui.View.ViewDosen
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -24,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ucp2_pertemuan11.data.Entity.Dosen
 import com.example.ucp2_pertemuan11.ui.ViewModel.ViewModelDosen.HomeDosenViewModel
 import com.example.ucp2_pertemuan11.ui.ViewModel.ViewModelDosen.HomeUiState
 import com.example.ucp2_pertemuan11.ui.ViewModel.ViewModelDosen.PenyediaDosenViewModel
@@ -123,6 +136,82 @@ fun BodyHomeDosenView(
                 },
                 modifier = modifier
             )
+        }
+    }
+}
+
+@Composable
+fun ListDOSEN(
+    listDosen: List<Dosen>,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = {}
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(
+            items = listDosen,
+            itemContent = { dsn ->
+                Carddsn(
+                    dsn = dsn,
+                    onClick = { onClick(dsn.Nidn) }
+                )
+            }
+        )
+    }
+}
+
+@Composable
+fun Carddsn(
+    dsn : Dosen,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+){
+    Card(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ){
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ){
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+
+            ){
+                Icon(imageVector = Icons.Filled.Person, contentDescription = "")
+                Spacer(modifier = Modifier.padding(4.dp))
+                Text(
+                    text = dsn.Nidn,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "")
+                Spacer(modifier = Modifier.padding(4.dp))
+                Text(
+                    text = dsn.Nama,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(imageVector = Icons.Filled.Home, contentDescription = "")
+                Spacer(modifier = Modifier.padding(4.dp))
+                Text(
+                    text = dsn.JenisKelamin,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
         }
     }
 }
